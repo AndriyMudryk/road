@@ -4,7 +4,7 @@ import java.awt.*;
 
 
 public class Gui_field extends JFrame {
-    private JPanel middle_panel;
+
     int pixels;
 
     private Road l_panel;
@@ -18,9 +18,9 @@ public class Gui_field extends JFrame {
     private PedestrianRoad rb_pr;
 
     private CircleCrossroad circleCrossroad;
-    private Traffic traffic;
+    private Traffic[] traffic;
 
-    public Gui_field(int pixels, Traffic traffic){
+    public Gui_field(int pixels, Traffic[] traffic){
         this.pixels = pixels;
         this.traffic = traffic;
 
@@ -34,12 +34,12 @@ public class Gui_field extends JFrame {
         getContentPane().add( top_left_panel );
 
         // Create the panels
+        create_cr();
         create_l_panel(0);
         create_r_panel(1);
         create_t_panel(2);
         create_b_panel(3);
         create_pr();
-        create_cr();
         // Create a splitter pane
 
         //splitPaneV = new JSplitPane( JSplitPane.VERTICAL_SPLIT );
@@ -81,41 +81,35 @@ public class Gui_field extends JFrame {
         */
     }
     public void create_l_panel(int id){
-        l_panel = new Road(traffic, 0, id);
+        l_panel = new Road(traffic[0], 0, id, circleCrossroad);
         l_panel.setBackground(Color.red);
         // Add some buttons
 
     }
 
     public void create_r_panel(int id){
-        r_panel = new Road(traffic, 2, id);
+        r_panel = new Road(traffic[1], 2, id, circleCrossroad);
         r_panel.setBackground(Color.red);
     }
     public void test(){
-        while (true)
-        {
-
-            l_panel.moveForward();
-            r_panel.moveForward();
-            t_panel.moveForward();
-            b_panel.moveForward();
-            l_panel.moveBackward();
-            r_panel.moveBackward();
-            t_panel.moveBackward();
-            b_panel.moveBackward();
-            l_panel.repaint();
-            r_panel.repaint();
-            t_panel.repaint();
-            b_panel.repaint();
-        }
+        l_panel.move();
+        r_panel.move();
+        t_panel.move();
+        b_panel.move();
+        circleCrossroad.move();
+        l_panel.repaint();
+        r_panel.repaint();
+        t_panel.repaint();
+        b_panel.repaint();
+        circleCrossroad.repaint();
     }
 
     public void create_t_panel(int id){
-        t_panel = new Road(traffic, 1, id);
+        t_panel = new Road(traffic[2], 1, id, circleCrossroad);
         t_panel.setBackground(Color.red);
     }
     public void create_b_panel(int id){
-        b_panel = new Road(traffic, 3, id);
+        b_panel = new Road(traffic[3], 3, id, circleCrossroad);
         b_panel.setBackground(Color.red);
     }
 
@@ -130,7 +124,7 @@ public class Gui_field extends JFrame {
         rb_pr.setBackground(Color.CYAN);
     }
     public void create_cr(){
-        circleCrossroad = new CircleCrossroad();
+        circleCrossroad = new CircleCrossroad(traffic);
         circleCrossroad.setBackground(Color.MAGENTA);
     }
 
